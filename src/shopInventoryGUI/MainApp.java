@@ -112,11 +112,16 @@ public class MainApp extends Application {
         return productData;
     }
 
+
     public void addSampleData() {
         productData.add(new Product("GeForce GTX 1080", ProductType.GPU, 5));
         productData.add(new Product("Intel i7 3960K", ProductType.CPU, 3));
         productData.add(new Product("Kingstone DDR4 8GB", ProductType.RAM, 1));
         productData.add(new Product("AMD Ryzen", ProductType.CPU, -1));
+        productData.add(new Product("Dell 27'", ProductType.DISPLAY, 3));
+        productData.add(new Product("Asus ROG 12XF300", ProductType.MOTHERBOARD,2));
+        productData.add(new Product("Logitech G120", ProductType.OTHER, 9));
+        productData.add(new Product("OCZ Golden 900W", ProductType.POWERSUPPLY, 0));
     }
 
 }

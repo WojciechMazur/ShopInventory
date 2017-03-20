@@ -7,6 +7,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -51,7 +53,16 @@
                   <Label fx:id="nameProductLabel" prefHeight="17.0" prefWidth="221.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label fx:id="typeProductLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label fx:id="quantintyProductLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label fx:id="inStockLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <ImageView id="okImage" fx:id="okImage" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" translateY="1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <image>
+                        <Image url="@../resources/OK.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView id="noImage" fx:id="noImage" fitHeight="25.0" fitWidth="25.0" layoutX="73.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <image>
+                        <Image url="@../resources/No.png" />
+                     </image>
+                  </ImageView>
                </children>
             </GridPane>
             <GridPane alignment="BOTTOM_CENTER" hgap="10.0" vgap="10.0">

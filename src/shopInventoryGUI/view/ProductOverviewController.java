@@ -1,10 +1,9 @@
 package shopInventoryGUI.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import shopInventoryGUI.MainApp;
 import shopInventoryGUI.model.Product;
 import shopInventoryGUI.model.ProductType;
@@ -28,7 +27,10 @@ public class ProductOverviewController {
     @FXML
     private Label quantintyProductLabel;
     @FXML
-    private Label inStockLabel;
+    private ImageView okImage;
+    @FXML
+    private ImageView noImage;
+
 
     private MainApp mainApp;
 
@@ -55,13 +57,19 @@ public class ProductOverviewController {
             nameProductLabel.setText(product.getNameOfProduct());
             typeProductLabel.setText(product.getTypeOfProduct().toString());
             quantintyProductLabel.setText(Integer.toString(product.getQuantityOfProduct()));
-            inStockLabel.setText(product.isProductInStockProperty().toString());
+            if(product.isProductInStockProperty().getValue()) {
+                okImage.setVisible(true);
+                noImage.setVisible(false);
+            }
+            else{
+                okImage.setVisible(false);
+                noImage.setVisible(true);
+            }
         }
         else{
             nameProductLabel.setText("");
             typeProductLabel.setText("");
             quantintyProductLabel.setText("");
-            inStockLabel.setText("");
         }
     }
     @FXML
