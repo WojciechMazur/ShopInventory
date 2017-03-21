@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -16,7 +17,14 @@ import shopInventoryGUI.model.*;
 import shopInventoryGUI.model.Product;
 import shopInventoryGUI.view.ProductEditDialogController;
 import shopInventoryGUI.view.ProductOverviewController;
-    import java.io.IOException;
+import shopInventoryGUI.view.RootLayoutController;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.IOException;
+import java.util.prefs.Preferences;
 
 public class MainApp extends Application {
     private Stage primaryStage;
@@ -49,14 +57,23 @@ public class MainApp extends Application {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
-            rootLayout= (BorderPane) loader.load();
+            rootLayout= loader.load();
 
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
+
+            RootLayoutController controller =loader.getController();
+            controller.setMainApp(this);
+
             primaryStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        File file = getProductFilePath();
+        if (file!=null){
+            loadProductDataFromFile(file);
         }
     }
 
@@ -64,7 +81,7 @@ public class MainApp extends Application {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ProductOverview.fxml"));
-            SplitPane personOverview = (SplitPane) loader.load();
+            SplitPane personOverview = loader.load();
 
             rootLayout.setCenter(personOverview);
 
@@ -81,7 +98,7 @@ public class MainApp extends Application {
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ProductEditDialog.fxml"));
-            GridPane page = (GridPane) loader.load();
+            GridPane page = loader.load();
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Edit Person");
@@ -110,6 +127,69 @@ public class MainApp extends Application {
         return productData;
     }
 
+    public File getProductFilePath(){
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+        String filePath = prefs.get("filePath", null);
+        if(filePath!=null){
+            return new File(filePath);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public void setProductFilePath(File file){
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+        if(file!=null){
+            prefs.put("filePath", file.getPath());
+            primaryStage.setTitle("Inventor - "+file.getName());
+        }
+        else{
+            prefs.remove("filePath");
+            primaryStage.setTitle("Inventor");
+        }
+    }
+
+    public void loadProductDataFromFile(File file){
+        try{
+            JAXBContext context = JAXBContext.newInstance(ProductListWrapper.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+
+            ProductListWrapper wrapper = (ProductListWrapper) unmarshaller.unmarshal(file);
+
+            productData.clear();
+            productData.addAll(wrapper.getProductList());
+            setProductFilePath(file);
+
+        }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not load data");
+            alert.setContentText("Could not load data from file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
+    }
+
+    public void saveProductDataToFile(File file){
+        try{
+            JAXBContext context = JAXBContext.newInstance(ProductListWrapper.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            ProductListWrapper wrapper = new ProductListWrapper();
+            wrapper.setProductList(productData);
+
+            marshaller.marshal(wrapper, file);
+        }catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not load data");
+            alert.setContentText("Could not save data to file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
+    }
 
     public void addSampleData() {
         productData.add(new Product("GeForce GTX 1080", ProductType.GPU, 5));
