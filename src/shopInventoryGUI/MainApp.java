@@ -16,9 +16,7 @@ import shopInventoryGUI.model.*;
 import shopInventoryGUI.model.Product;
 import shopInventoryGUI.view.ProductEditDialogController;
 import shopInventoryGUI.view.ProductOverviewController;
-
-import java.io.IOException;
-import java.net.URL;
+    import java.io.IOException;
 
 public class MainApp extends Application {
     private Stage primaryStage;

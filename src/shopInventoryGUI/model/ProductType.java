@@ -1,47 +1,24 @@
 package shopInventoryGUI.model;
 
+import java.awt.*;
+
 public enum ProductType {
-    CPU{
-        @Override
-        public String toString() {
-            return "CPU";
-        }
-    },
-    RAM{
-        @Override
-        public String toString() {
-            return "RAM";
-        }
-    },
-    GPU{
-        @Override
-        public String toString() {
-            return "Graphics card";
-        }
-    },
-    MOTHERBOARD{
-        @Override
-        public String toString() {
-            return "Motherboard";
-        }
-    },
-    DISPLAY{
-        @Override
-        public String toString() {
-            return "Display";
-        }
-    },
-    POWERSUPPLY{
-        @Override
-        public String toString() {
-            return "Power supply";
-        }
-    },
-    OTHER{
-        @Override
-        public String toString() {
-            return "Other";
-        }
+
+    CPU("Processor"),
+    RAM("Memory"),
+    GPU("Graphics Card"),
+    MOTHERBOARD("Motherboard"),
+    DISPLAY("Display"),
+    POWERSUPPLY("Power supply"),
+    OTHER("Other");
+
+    private String label;
+    ProductType(String label){
+        this.label= label;
     }
 
+    @Override
+    public String toString() {
+        return label;
+    }
 }
